@@ -189,6 +189,6 @@ sudo update-rc.d trojanstart defaults
 nohup trojan -c /etc/trojan/server.conf > /etc/trojan/info.log 2>&1 &
 
 green "===============安装OK==============="
-green " 证书文件：/etc/nginx/ssl/fullchain.cer"
-green " 客户端配置：/etc/nginx/ssl/config.json"
-green " 将以上两个文件传输到客户端trojan文件夹"
+green " cer path：/etc/nginx/ssl/fullchain.cer"
+green " client config：/etc/nginx/ssl/config.json"
+green " put above two file in the trojan client"
