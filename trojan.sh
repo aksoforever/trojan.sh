@@ -66,7 +66,7 @@ EOF
     sleep 3
     rm -rf /usr/share/nginx/html/*
     cd /usr/share/nginx/html/
-    wget https://github.com/xxxbrian/trojan.sh/raw/main/fakesite.zip >/dev/null 2>&1
+    wget https://github.com/aksoforever/trojan.sh/raw/main/fakesite.zip >/dev/null 2>&1
     unzip fakesite.zip >/dev/null 2>&1
     sleep 5
     if [ ! -d "/usr/src" ]; then
@@ -129,14 +129,18 @@ http {
     keepalive_timeout  120;
     client_max_body_size 20m;
     #gzip  on;
+
     server {
-        listen       127.0.0.1:80;
+        listen [::]:80;  # Listen on IPv6 address
+        listen 127.0.0.1:80;  # Listen on IPv4 address
         server_name  $your_domain;
         root /usr/share/nginx/html;
         index index.php index.html index.htm;
     }
+
     server {
-        listen       0.0.0.0:80;
+        listen [::]:80 ipv6only=on;  # Listen on IPv6 address only
+        listen 0.0.0.0:80;
         server_name  $your_domain;
         return 301 https://$your_domain\$request_uri;
     }
@@ -155,7 +159,7 @@ EOF
         rm -f trojan-${latest_version}-linux-amd64.tar.xz
         #下载trojan客户端
         green "开始下载并处理trojan windows客户端"
-        wget https://github.com/xxxbrian/trojan.sh/raw/main/trojan-cli.zip
+        wget https://github.com/aksoforever/trojan.sh/raw/main/trojan-cli.zip
         wget -P /usr/src/trojan-temp https://github.com/trojan-gfw/trojan/releases/download/v${latest_version}/trojan-${latest_version}-win.zip
         unzip -o trojan-cli.zip >/dev/null 2>&1
         unzip -o /usr/src/trojan-temp/trojan-${latest_version}-win.zip -d /usr/src/trojan-temp/ >/dev/null 2>&1
