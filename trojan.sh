@@ -55,6 +55,7 @@ http {
     #gzip  on;
     server {
         listen       80;
+        listen       [::]:80;
         server_name  $your_domain;
         root /usr/share/nginx/html;
         index index.php index.html index.htm;
@@ -165,7 +166,7 @@ EOF
         cat > /usr/src/trojan-cli/config.json <<-EOF
 {
     "run_type": "client",
-    "local_addr": "127.0.0.1",
+    "local_addr": "::1",
     "local_port": 1080,
     "remote_addr": "$your_domain",
     "remote_port": 443,
@@ -199,7 +200,7 @@ EOF
          cat > /usr/src/trojan/server.conf <<-EOF
 {
     "run_type": "server",
-    "local_addr": "0.0.0.0",
+    "local_addr": "::",
     "local_port": 443,
     "remote_addr": "127.0.0.1",
     "remote_port": 80,
@@ -382,8 +383,9 @@ function preinstall_check(){
     blue "请输入绑定到本VPS的域名"
     green "======================="
     read your_domain
-    real_addr=`ping ${your_domain} -c 1 | sed '1{s/[^(]*(//;s/).*//;q}'`
-    local_addr=`curl ipv4.icanhazip.com`
+    # Use ping6 and curl6 for IPv6 resolution
+    real_addr=`ping6 -c 1 ${your_domain} | sed '1{s/[^(]*(//;s/).*//;q}'`
+    local_addr=`curl6 ipv6.icanhazip.com`
     if [ $real_addr == $local_addr ] ; then
         green "=========================================="
         green "       域名解析正常，开始安装trojan"
@@ -424,8 +426,9 @@ function repair_cert(){
     blue "务必与之前失败使用的域名一致"
     green "============================"
     read your_domain
-    real_addr=`ping ${your_domain} -c 1 | sed '1{s/[^(]*(//;s/).*//;q}'`
-    local_addr=`curl ipv4.icanhazip.com`
+    # Use ping6 and curl6 for IPv6 resolution
+    real_addr=`ping6 -c 1 ${your_domain} | sed '1{s/[^(]*(//;s/).*//;q}'`
+    local_addr=`curl6 ipv6.icanhazip.com`
     if [ $real_addr == $local_addr ] ; then
         ~/.acme.sh/acme.sh  --register-account  -m myemail@example.com --server zerossl
         ~/.acme.sh/acme.sh  --issue  -d $your_domain  --standalone
