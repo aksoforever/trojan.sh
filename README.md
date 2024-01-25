@@ -77,6 +77,14 @@ Trojan可以将科学上网流量，伪装为HTTPS网页浏览。相比Shadowsoc
 curl -O https://raw.githubusercontent.com/aksoforever/trojan.sh/main/trojan.sh && chmod +x trojan.sh && ./trojan.sh
 ```
 
+**Trojan-Nginx-Domain：**
+
+```sh
+curl -O https://raw.githubusercontent.com/aksoforever/trojan.sh/main/trojan_install_ubuntu.sh && chmod +x trojan_install_ubuntu.sh && ./trojan_install_ubuntu.sh
+```
+
+
+
 如果以上命令运行时出现关于curl的错误提示，那么需要先为服务器安装curl后，再运行以上命令。如果没有错误提示，则忽略本段内容。
 
 **CentOS：**
