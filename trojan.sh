@@ -388,8 +388,8 @@ function preinstall_check(){
     green "======================="
     read your_domain
     # Use ping6 and curl for IPv6 resolution
-    real_addr=`ping6 -c 1 ${your_domain} | sed '1{s/[^(]*(//;s/).*//;q}'`
-    local_addr=`curl ipv6.icanhazip.com`
+    real_addr=$(dig +short AAAA ${your_domain} | head -n 1)
+    local_addr=$(curl -6 ifconfig.co)
     if [ "$real_addr" == "$local_addr" ] ; then
         green "=========================================="
         green "       域名解析正常，开始安装trojan"
@@ -431,8 +431,9 @@ function repair_cert(){
     green "============================"
     read your_domain
     # Use ping6 and curl for IPv6 resolution
-    real_addr=`ping6 -c 1 ${your_domain} | sed '1{s/[^(]*(//;s/).*//;q}'`
-    local_addr=`curl ipv6.icanhazip.com`
+    real_addr=$(dig +short AAAA ${your_domain} | head -n 1)
+    local_addr=$(curl -6 ifconfig.co)
+
     if [ "$real_addr" == "$local_addr" ] ; then
         ~/.acme.sh/acme.sh  --register-account  -m myemail@example.com --server zerossl
         ~/.acme.sh/acme.sh  --issue  -d $your_domain  --standalone
